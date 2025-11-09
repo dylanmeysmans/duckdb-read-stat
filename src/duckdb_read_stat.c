@@ -173,9 +173,9 @@ void duckdb_read_stat_bind(duckdb_bind_info info)
             data->file_format = DUCKDB_READ_STAT_FILE_FORMAT_STATA;
             error = readstat_parse_dta(parser, path, data);
         }
-        else if (!strcmp(format, "sas7cdat"))
+        else if (!strcmp(format, "sas7bcat"))
         {
-            duckdb_bind_set_error(info, "SAS catalog files (.sas7cdat) are not supported. Only SAS data files (.sas7bdat, .xpt) are supported.");
+            duckdb_bind_set_error(info, "SAS catalog files (.sas7bcat) are not supported. Only SAS data files (.sas7bdat, .xpt) are supported.");
             readstat_parser_free(parser);
             duckdb_free(data);
             return;
@@ -213,9 +213,9 @@ void duckdb_read_stat_bind(duckdb_bind_info info)
         data->file_format = DUCKDB_READ_STAT_FILE_FORMAT_STATA;
         error = readstat_parse_dta(parser, path, data);
     }
-    else if (duckdb_read_stat_ends_with(path, ".sas7cdat"))
+    else if (duckdb_read_stat_ends_with(path, ".sas7bcat"))
     {
-        duckdb_bind_set_error(info, "SAS catalog files (.sas7cdat) are not supported. Only SAS data files (.sas7bdat, .xpt) are supported.");
+        duckdb_bind_set_error(info, "SAS catalog files (.sas7bcat) are not supported. Only SAS data files (.sas7bdat, .xpt) are supported.");
         readstat_parser_free(parser);
         duckdb_free(data);
         return;
