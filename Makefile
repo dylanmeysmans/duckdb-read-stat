@@ -10,10 +10,10 @@ EXTENSION_DEBUG_FLAGS=-Og -ggdb3
 # Set to 1 to enable Unstable API (binaries will only work on TARGET_DUCKDB_VERSION, forwards compatibility will be broken)
 # WARNING: When set to 1, the duckdb_extension.h from the TARGET_DUCKDB_VERSION must be used, using any other version of
 #          the header is unsafe.
-USE_UNSTABLE_C_API=0
+USE_UNSTABLE_C_API=1
 
 # The DuckDB version to target
-TARGET_DUCKDB_VERSION=v1.2.0
+TARGET_DUCKDB_VERSION=v1.5.4
 
 all: configure release
 
