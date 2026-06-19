@@ -25,6 +25,7 @@ typedef struct duckdb_read_stat_bind_data
     const char *path;
     char *error_message;
     duckdb_bind_info bind_info;
+    duckdb_file_handle file_handle;
 } duckdb_read_stat_bind_data;
 
 int duckdb_read_stat_ends_with(const char *string, const char *suffix);
@@ -46,6 +47,11 @@ typedef struct duckdb_read_stat_init_data
 
 void duckdb_read_stat_init(duckdb_init_info info);
 
+typedef struct duckdb_read_stat_io_context
+{
+    duckdb_file_handle file_handle;
+} duckdb_read_stat_io_context;
+
 typedef struct duckdb_read_stat_context
 {
     char *error_message;
@@ -58,6 +64,14 @@ int duckdb_read_stat_handle_value(int obs_index, readstat_variable_t *variable, 
 void duckdb_read_stat_function(duckdb_function_info info, duckdb_data_chunk output);
 
 void duckdb_read_stat_handle_error(const char *error_message, void *ctx);
+
+int duckdb_read_stat_handle_open(const char *path, void *io_ctx);
+
+int duckdb_read_stat_handle_close(void *io_ctx);
+
+ssize_t duckdb_read_stat_handle_read(void *buf, size_t nbyte, void *io_ctx);
+
+readstat_off_t duckdb_read_stat_handle_seek(readstat_off_t offset, readstat_io_flags_t whence, void *io_ctx);
 
 void duckdb_read_stat_register_read_stat_function(duckdb_connection connection);
 
