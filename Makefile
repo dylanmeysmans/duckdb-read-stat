@@ -13,7 +13,7 @@ EXTENSION_DEBUG_FLAGS=-Og -ggdb3
 USE_UNSTABLE_C_API=1
 
 # The DuckDB version to target
-TARGET_DUCKDB_VERSION=v1.5.5
+TARGET_DUCKDB_VERSION=v2.0.0
 
 all: configure release
 
