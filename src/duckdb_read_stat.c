@@ -171,7 +171,7 @@ void duckdb_read_stat_bind(duckdb_bind_info info)
             data->file_format = DUCKDB_READ_STAT_FILE_FORMAT_SAS;
             error = readstat_parse_sas7bdat(parser, path, data);
         }
-        if (!strcmp(format, "xpt"))
+        else if (!strcmp(format, "xpt"))
         {
             data->file_format = DUCKDB_READ_STAT_FILE_FORMAT_SAS;
             error = readstat_parse_xport(parser, path, data);
@@ -190,6 +190,20 @@ void duckdb_read_stat_bind(duckdb_bind_info info)
         {
             data->file_format = DUCKDB_READ_STAT_FILE_FORMAT_STATA;
             error = readstat_parse_dta(parser, path, data);
+        }
+        else if (!strcmp(format, "sas7bcat"))
+        {
+            duckdb_bind_set_error(info, "SAS catalog files (.sas7bcat) are not supported. Only SAS data files (.sas7bdat, .xpt) are supported.");
+            readstat_parser_free(parser);
+            duckdb_free(data);
+            return;
+        }
+        else
+        {
+            duckdb_bind_set_error(info, "Unsupported format parameter. Supported formats are: sas7bdat, xpt (SAS), sav, zsav, por (SPSS), and dta (Stata).");
+            readstat_parser_free(parser);
+            duckdb_free(data);
+            return;
         }
     }
     else if (duckdb_read_stat_ends_with(path, ".sas7bdat"))
@@ -216,6 +230,20 @@ void duckdb_read_stat_bind(duckdb_bind_info info)
     {
         data->file_format = DUCKDB_READ_STAT_FILE_FORMAT_STATA;
         error = readstat_parse_dta(parser, path, data);
+    }
+    else if (duckdb_read_stat_ends_with(path, ".sas7bcat"))
+    {
+        duckdb_bind_set_error(info, "SAS catalog files (.sas7bcat) are not supported. Only SAS data files (.sas7bdat, .xpt) are supported.");
+        readstat_parser_free(parser);
+        duckdb_free(data);
+        return;
+    }
+    else
+    {
+        duckdb_bind_set_error(info, "Unsupported file extension. Supported formats are: .sas7bdat, .xpt (SAS), .sav, .zsav, .por (SPSS), and .dta (Stata). Specify the format parameter explicitly if the file extension is incorrect.");
+        readstat_parser_free(parser);
+        duckdb_free(data);
+        return;
     }
 
     if (error != READSTAT_OK)
